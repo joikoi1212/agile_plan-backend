@@ -40,7 +40,7 @@ func CallbackHandler(c *gin.Context) {
 	fmt.Println("Session username:", session.Get("username"))
 	fmt.Println("Session avatar:", session.Get("avatar"))
 	fmt.Println("Session ID:", session.Get("id"))
-	c.Redirect(http.StatusFound, "https://your-project-name.vercel.app/dashboard")
+	c.Redirect(http.StatusFound, "https://agileplan-backend-production.up.railway.app/dashboard")
 
 }
 
