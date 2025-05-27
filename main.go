@@ -6,6 +6,7 @@ import (
 	"backend/routes"
 	"backend/websocket"
 	"log"
+	"os"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
@@ -13,7 +14,10 @@ import (
 )
 
 func main() {
-
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
 	r := gin.Default()
 	db.InitDB()
 	store := cookie.NewStore([]byte("secret-key"))
@@ -22,6 +26,6 @@ func main() {
 	manager := websocket.NewManager()
 	routes.RegisterRoutes(r, manager)
 
-	log.Println("Server running on http://localhost:8088")
-	r.Run(":8080")
+	log.Printf("Server running on port %s\n", port)
+	r.Run(":" + port)
 }
