@@ -40,10 +40,7 @@ func CallbackHandler(c *gin.Context) {
 	fmt.Println("Session username:", session.Get("username"))
 	fmt.Println("Session avatar:", session.Get("avatar"))
 	fmt.Println("Session ID:", session.Get("id"))
-	c.JSON(http.StatusOK, gin.H{
-		"message":  "Login successful",
-		"redirect": "/dashboard",
-	})
+	c.Redirect(http.StatusFound, "https://agile-plan-backend.vercel.app/dashboard")
 
 }
 
