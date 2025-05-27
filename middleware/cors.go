@@ -16,9 +16,10 @@ func CORSMiddleware() gin.HandlerFunc {
 	allowedOrigin := fmt.Sprintf("http://%s:%s", hostname, port)
 	fmt.Printf("CORS Middleware: Allowing origin %s\n", allowedOrigin)
 	return cors.New(cors.Config{
-		AllowOrigins:     []string{"*"},
+		AllowOrigins:     []string{"https://agile-plan-backend.vercel.app"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		AllowHeaders:     []string{"Content-Type", "Authorization"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
 	})
 }
