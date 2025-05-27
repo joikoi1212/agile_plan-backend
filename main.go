@@ -23,5 +23,5 @@ func main() {
 	routes.RegisterRoutes(r, manager)
 
 	log.Println("Server running on http://localhost:8088")
-	r.Run(":8088")
+	r.Run(":8080")
 }
