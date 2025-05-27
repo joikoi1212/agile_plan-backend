@@ -27,5 +27,5 @@ func main() {
 	routes.RegisterRoutes(r, manager)
 
 	log.Printf("Server running on port %s\n", port)
-	r.Run("0.0.0.0:8080")
+	r.Run("0.0.0.0:3000")
 }
