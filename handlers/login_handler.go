@@ -17,7 +17,7 @@ var oauth2Config = &oauth2.Config{
 	ClientID:     os.Getenv("CLIENT_ID"),
 	ClientSecret: os.Getenv("CLIENT_SECRET"),
 	Endpoint:     oauth2github.Endpoint,
-	RedirectURL:  "https://agileplan-backend-production.up.railway.app",
+	RedirectURL:  "https://agileplan-backend-production.up.railway.app/api/v1/callback",
 	Scopes:       []string{"read:org", "user"},
 }
 
