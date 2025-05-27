@@ -16,7 +16,7 @@ func CORSMiddleware() gin.HandlerFunc {
 	allowedOrigin := fmt.Sprintf("http://%s:%s", hostname, port)
 	fmt.Printf("CORS Middleware: Allowing origin %s\n", allowedOrigin)
 	return cors.New(cors.Config{
-		AllowOrigins:     []string{allowedOrigin},
+		AllowOrigins:     []string{"*"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Content-Type", "Authorization"},
 		AllowCredentials: true,
