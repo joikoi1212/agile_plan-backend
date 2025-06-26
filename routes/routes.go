@@ -12,6 +12,9 @@ func RegisterRoutes(r *gin.Engine, manager *websocket.Manager) {
 	RegisterAuthRoutes(group)
 
 	r.GET("/ws", func(c *gin.Context) {
+		// Add CORS headers for WebSocket
+		c.Header("Access-Control-Allow-Origin", "*")
+		c.Header("Access-Control-Allow-Credentials", "true")
 		manager.ServeWS(c.Writer, c.Request)
 	})
 }
