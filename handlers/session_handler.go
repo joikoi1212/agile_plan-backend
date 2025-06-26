@@ -15,12 +15,19 @@ func SessionHandler(c *gin.Context) {
 	avatar := session.Get("avatar")
 
 	if username == nil || avatar == nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"######error": "Nothing in session"})
+		log.Println("No session found - treating as guest")
+		c.JSON(http.StatusOK, gin.H{
+			"guest": true,
+			"authenticated": false,
+			"message": "Guest mode",
+		})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"username": username,
 		"avatar":   avatar,
+		"authenticated": true,
+		"guest": false,
 	})
 }

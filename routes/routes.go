@@ -9,22 +9,14 @@ import (
 )
 
 func RegisterRoutes(r *gin.Engine, manager *websocket.Manager) {
-	// Register WebSocket route FIRST (before other routes that might apply middleware)
+
 	r.GET("/ws", func(c *gin.Context) {
-		// Log all WebSocket connection attempts
 		log.Printf("WebSocket connection attempt from %s, Origin: %s", c.ClientIP(), c.GetHeader("Origin"))
-		
+
 		// Add CORS headers for WebSocket
 		c.Header("Access-Control-Allow-Origin", "*")
 		c.Header("Access-Control-Allow-Credentials", "true")
-		
-		// Initialize session if it doesn't exist (but don't fail if it does)
-		defer func() {
-			if r := recover(); r != nil {
-				log.Printf("Session recovery in WebSocket: %v (continuing)", r)
-			}
-		}()
-		
+
 		manager.ServeWS(c.Writer, c.Request)
 	})
 
