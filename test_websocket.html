@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket Test</title>
+</head>
+<body>
+    <h1>WebSocket Connection Test</h1>
+    <div id="status">Connecting...</div>
+    <div id="messages"></div>
+    <br>
+    <input type="text" id="messageInput" placeholder="Enter message">
+    <button onclick="sendMessage()">Send</button>
+    <button onclick="joinRoom()">Join Test Room</button>
+
+    <script>
+        let ws;
+        const statusDiv = document.getElementById('status');
+        const messagesDiv = document.getElementById('messages');
+
+        function connect() {
+            // Try to connect to websocket
+            const wsUrl = 'ws://localhost:8080/ws';
+            console.log('Attempting to connect to:', wsUrl);
+            
+            ws = new WebSocket(wsUrl);
+            
+            ws.onopen = function(event) {
+                console.log('WebSocket connected');
+                statusDiv.textContent = 'Connected';
+                statusDiv.style.color = 'green';
+            };
+            
+            ws.onmessage = function(event) {
+                console.log('Message received:', event.data);
+                const message = document.createElement('div');
+                message.textContent = 'Received: ' + event.data;
+                messagesDiv.appendChild(message);
+            };
+            
+            ws.onerror = function(error) {
+                console.error('WebSocket error:', error);
+                statusDiv.textContent = 'Error: ' + error;
+                statusDiv.style.color = 'red';
+            };
+            
+            ws.onclose = function(event) {
+                console.log('WebSocket closed:', event.code, event.reason);
+                statusDiv.textContent = 'Disconnected: ' + event.code + ' - ' + event.reason;
+                statusDiv.style.color = 'red';
+            };
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(input.value);
+                input.value = '';
+            } else {
+                alert('WebSocket is not connected');
+            }
+        }
+
+        function joinRoom() {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                const message = {
+                    action: "joinRoom",
+                    roomKey: "TEST123",
+                    player: {
+                        name: "TestGuest"
+                    }
+                };
+                ws.send(JSON.stringify(message));
+            } else {
+                alert('WebSocket is not connected');
+            }
+        }
+
+        // Start connection when page loads
+        connect();
+    </script>
+</body>
+</html>
