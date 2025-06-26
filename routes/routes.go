@@ -9,25 +9,8 @@ import (
 )
 
 func RegisterRoutes(r *gin.Engine, manager *websocket.Manager) {
-
-	r.GET("/ws", func(c *gin.Context) {
-		log.Printf("WebSocket connection attempt from %s, Origin: %s", c.ClientIP(), c.GetHeader("Origin"))
-		log.Printf("Request reaching WebSocket handler successfully")
-
-		c.Header("Access-Control-Allow-Origin", "*")
-		c.Header("Access-Control-Allow-Credentials", "true")
-
-		defer func() {
-			if r := recover(); r != nil {
-				log.Printf("WebSocket panic recovered: %v", r)
-			}
-		}()
-
-		log.Printf("About to call ServeWS")
-		manager.ServeWS(c.Writer, c.Request)
-		log.Printf("ServeWS completed")
-	})
-
+	// WebSocket route is now handled in main.go before middleware
+	
 	// Test endpoint to check if route is reachable
 	r.GET("/ws-test", func(c *gin.Context) {
 		log.Printf("WebSocket test endpoint hit from %s", c.ClientIP())
