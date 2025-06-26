@@ -9,6 +9,12 @@ import (
 )
 
 func RegisterRoutes(r *gin.Engine, manager *websocket.Manager) {
+	// Session warm-up endpoint for guests - this initializes the session store
+	r.GET("/ping", func(c *gin.Context) {
+		c.Header("Access-Control-Allow-Origin", "*")
+		c.Header("Access-Control-Allow-Credentials", "true")
+		c.JSON(200, gin.H{"status": "ok"})
+	})
 
 	r.GET("/ws", func(c *gin.Context) {
 		log.Printf("WebSocket connection attempt from %s, Origin: %s", c.ClientIP(), c.GetHeader("Origin"))
@@ -16,6 +22,13 @@ func RegisterRoutes(r *gin.Engine, manager *websocket.Manager) {
 		// Add CORS headers for WebSocket
 		c.Header("Access-Control-Allow-Origin", "*")
 		c.Header("Access-Control-Allow-Credentials", "true")
+
+		// Try to prevent session-related panics
+		defer func() {
+			if r := recover(); r != nil {
+				log.Printf("WebSocket panic recovered: %v", r)
+			}
+		}()
 
 		manager.ServeWS(c.Writer, c.Request)
 	})
